@@ -33,9 +33,10 @@ grid = [[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
         [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
         [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']]
 
-gridsize = 12
+gridsize = 8
 solutions = 0
-
+#debug = True
+debug = False
 
 def print_grid(s):
     print("Solution:", s)
@@ -52,52 +53,43 @@ def possible(row, col):
     # Test for any same column conflict.
     for c in range(0, gridsize):
         if grid[row][c] == 'Q':
-            #print("T1")
             return False
     # Test for any same row conflict.
     for r in range(0, gridsize):
         if grid[r][col] == 'Q':
-            #print("T2")
             return False
 
     # Test for any diagonal conflicts.
 
-    # Leading (\) diagonal test.
+    # Leading-Down (\) diagonal test.
     if row == col:
         for r in range(0, gridsize):
             if grid[r][r] == 'Q':
-                #print("T3")
                 return False
     elif row > col:
         start_row = row - col
         for r, c in zip(range(start_row, gridsize), range(0, gridsize - start_row)):
             if grid[r][c] == 'Q':
-                #print("T4")
                 return False
     else:
         start_col = col - row
         for r, c in zip(range(0, gridsize - start_col), range(start_col, gridsize)):
             if grid[r][c] == 'Q':
-                #print("T5")
                 return False
 
-    # Trailing (/) diagonal test.
+    # Trailing-Up (/) diagonal test.
     sum = row + col
-    terms = 0
     start_row = 0
     stop_row = 0
     if sum <= gridsize - 1:
-        terms = sum + 1
         start_row = 0
         stop_row = sum + 1
     else:
-        terms = (2 * gridsize) - 1 - sum
         start_row = sum - (gridsize - 1)
         stop_row = gridsize - 1
 
     for r in range(start_row, stop_row):
         if grid[r][sum-r] == 'Q':
-                #print("T6")
                 return False
 
     return True
@@ -106,7 +98,8 @@ def possible(row, col):
 def solve(row):
     global grid
     global solutions
-    #print(f" Row-{row}")
+    if debug:
+        print(f" Row-{row}")
     placed = False
     for col in range(0, gridsize):
         if grid[row][col] == ' ':
@@ -121,14 +114,15 @@ def solve(row):
                     #input("More?")
                     grid[row][col] = ' '
                 else:
-                    #print("Calling solve...")
                     solve(row + 1)
                     grid[row][col] = ' '
     if not placed:
         pass
-        #print("Backtracking...")
+        if debug:
+            print("Backtracking...")
 
-    #print("Solve returning...")
+    if debug:
+        print("Solve returning...")
     return
 
 
