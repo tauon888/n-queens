@@ -28,6 +28,9 @@ using sets - https://www.youtube.com/watch?v=Ph95IHmRp5M
 | 13 |   |  73,712 | 00:10:18 | 00:00:00 |
 | 14 |   | 365,596 | 01:01:03 | 00:00:00 |
 
+- Note <sup>1</sup> - Timings based on my original diagonal checking
+- Note <sup>2</sup> - Timings based on Neetcode's diagonal checking
+
 ## Sample run
 ```
 python n-queens.py
