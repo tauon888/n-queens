@@ -12,26 +12,14 @@
 import sys
 import time
 
-"""
-grid = [[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
-        [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
-        [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
-        [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
-        [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
-        [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
-        [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
-        [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
-        [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
-        [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
-        [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
-        [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']]
-"""
-
 grid_size = 5
 solutions = 0
 #debug = True
 debug = False
 grid = []
+cols_used = set()
+up_diags_used = set() # (row + col)
+down_diags_used = set() # (row - col)
 
 def print_grid(s):
     print("Solution:", s)
@@ -44,82 +32,36 @@ def print_grid(s):
     return
 
 
-def possible(row, col):
-    global grid
-    global grid_size
-    # Test for any same column conflict.
-    for c in range(0, grid_size):
-        if grid[row][c] == 'Q':
-            return False
-    # Test for any same row conflict.
-    for r in range(0, grid_size):
-        if grid[r][col] == 'Q':
-            return False
-
-    # Test for any diagonal conflicts.
-
-    # Leading-Down (\) diagonal test.
-    if row == col:
-        for r in range(0, grid_size):
-            if grid[r][r] == 'Q':
-                return False
-    elif row > col:
-        start_row = row - col
-        for r, c in zip(range(start_row, grid_size), range(0, grid_size + 1 - start_row)):
-            if grid[r][c] == 'Q':
-                return False
-    else:
-        start_col = col - row
-        for r, c in zip(range(0, grid_size - start_col), range(start_col, grid_size)):
-            if grid[r][c] == 'Q':
-                return False
-
-    # Trailing-Up (/) diagonal test.
-    sum = row + col
-    start_row = 0
-    stop_row = 0
-    if sum <= grid_size - 1:
-        start_row = 0
-        stop_row = sum + 1
-    else:
-        start_row = sum - (grid_size - 1)
-        stop_row = grid_size - 1
-
-    for r in range(start_row, stop_row):
-        if grid[r][sum-r] == 'Q':
-                return False
-
-    return True
-
-
 def solve(row):
     global grid
     global solutions
-    if debug:
-        print(f" Row-{row}")
-    placed = False
-    for col in range(0, grid_size):
-        if grid[row][col] == ' ':
-            if possible(row, col):
-                grid[row][col] = 'Q'
-                placed = True
-                #print_grid()
-                #input("Cont?")
-                if row == grid_size - 1:
-                    solutions += 1
-                    print_grid(solutions)
-                    #input("More?")
-                    grid[row][col] = ' '
-                else:
-                    solve(row + 1)
-                    grid[row][col] = ' '
-    if not placed:
-        pass
-        if debug:
-            print("Backtracking...")
 
     if debug:
-        print("Solve returning...")
+        print(f" Row-{row}")
+        
+    if row == grid_size:
+        solutions += 1
+        print_grid(solutions)
+        return        
+        
+    for col in range(0, grid_size):
+        if col in cols_used or (row + col) in up_diags_used or (row - col) in down_diags_used:
+            continue
+        
+        cols_used.add(col)
+        up_diags_used.add(row + col)
+        down_diags_used.add(row - col)
+        grid[row][col] = 'Q'
+        
+        # Solve the next row by calling ourself recursively.
+        solve(row + 1)
+
+        # Now backtrack to find more solutions.
+        cols_used.remove(col)
+        up_diags_used.remove(row + col)
+        down_diags_used.remove(row - col)
+        grid[row][col] = ' '
+        
     return
 
 
