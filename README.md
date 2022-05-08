@@ -21,12 +21,12 @@ using sets - https://www.youtube.com/watch?v=Ph95IHmRp5M
 |  6 |   |       4 | 00:00:00 | 00:00:00 |
 |  7 |   |      40 | 00:00:00 | 00:00:00 |
 |  8 |   |      92 | 00:00:00 | 00:00:00 |
-|  9 |   |     352 | 00:00:02 | 00:00:00 |
-| 10 |   |     724 | 00:00:04 | 00:00:00 |
-| 11 |   |   2,680 | 00:00:20 | 00:00:00 |
-| 12 |   |  14,200 | 00:01:59 | 00:00:00 |
-| 13 |   |  73,712 | 00:10:18 | 00:00:00 |
-| 14 |   | 365,596 | 01:01:03 | 00:00:00 |
+|  9 |   |     352 | 00:00:02 | 00:00:01 |
+| 10 |   |     724 | 00:00:04 | 00:00:03 |
+| 11 |   |   2,680 | 00:00:20 | 00:00:12 |
+| 12 |   |  14,200 | 00:01:59 | 00:01:13 |
+| 13 |   |  73,712 | 00:10:18 | 00:05:42 |
+| 14 |   | 365,596 | 01:01:03 | 00:34:48 |
 
 - Note <sup>1</sup> - Timings based on my original diagonal checking
 - Note <sup>2</sup> - Timings based on Neetcode's diagonal checking
@@ -42,7 +42,9 @@ Original Diagonal Checking Logic...
 | **row 3** | (3,0) | (3,1) | (3,2) | (3,3) | (3,4) |
 | **row 4** | (4,0) | (4,1) | (4,2) | (4,3) | (4,4) |
 -->
-### Leading/Down Diagonals
+### Leading/Down Diagonals - Original Logic
+**Compute the diagonal for the potential queen and look along it for an existing one**
+
 |           | col 0 | col 1 | col 2 |  col 3| col 4 |
 | :-------: | :---: | :---: | :---: | :---: | :---: |
 | **row 0** | <span style="color:red;">(0,0)</span> | <span style="color:yellow;">(0,1)</span> | <span style="color:green;">(0,2)</span> | <span style="color:orange;">(0,3)</span> | (0,4) |
@@ -76,7 +78,9 @@ Original Diagonal Checking Logic...
             if grid[r][c] == 'Q':
                 return False
 ```
-### Trailing/Up Diagonals
+### Trailing/Up Diagonals - Original Logic
+**Compute the diagonal for the potential queen and look along it for an existing one**
+
 |           | col 0 | col 1 | col 2 |  col 3| col 4 |
 | :-------: | :---: | :---: | :---: | :---: | :---: |
 | **row 0** | (0,0)</span> | <span style="color:orange;">(0,1)</span> | <span style="color:green;">(0,2)</span> | <span style="color:yellow;">(0,3)</span> | <span style="color:red;">(0,4)</span> |
@@ -105,6 +109,29 @@ for r in range(start_row, stop_row + 1):
     if grid[r][sum-r] == 'Q':
             return False
 ```
+
+### Leading/Down Diagonals - Simpler Logic
+**Store each placed queen's (row - col) in a set of leading/down diagonals and test any new potential queen won't conflict**
+
+|           | col 0 | col 1 | col 2 |  col 3| col 4 |
+| :-------: | :---: | :---: | :---: | :---: | :---: |
+| **row 0** | <span style="color:red;">(0,0) = 0</span> | <span style="color:yellow;">(0,1) = -1</span> | <span style="color:green;">(0,2) = -2</span> | <span style="color:orange;">(0,3) = -3</span> | (0,4) = -4|
+| **row 1** | <span style="color:cyan;">(1,0) = 1</span> | <span style="color:red;">(1,1) = 0</span> | <span style="color:yellow;">(1,2) = -1</span> | <span style="color:green;">(1,3) = -2</span> | <span style="color:orange;">(1,4) = -3</span> |
+| **row 2** | <span style="color:salmon;">(2,0) = 2</span> | <span style="color:cyan;">(2,1) = 1</span> | <span style="color:red;">(2,2) = 0</span> | <span style="color:yellow;">(2,3) = -1</span> | <span style="color:green;">(2,4) = -2</span> |
+| **row 3** | <span style="color:magenta;">(3,0) = 3</span> | <span style="color:salmon;">(3,1) = 2</span> | <span style="color:cyan;">(3,2) = 1</span> | <span style="color:red;">(3,3) = 0</span> | <span style="color:yellow;">(3,4) = -1</span> |
+| **row 4** | (4,0) = 4| <span style="color:magenta;">(4,1) = 3</span> | <span style="color:salmon;">(4,2) = 2</span> | <span style="color:cyan;">(4,3) = 1</span> | <span style="color:red;">(4,4) = 0</span> |
+
+### Trailing/Up Diagonals - Simpler Logic
+**Store each placed queen's (row + col) in a set of trailing/up diagonals and test any new potential queen won't conflict**
+
+|           | col 0 | col 1 | col 2 |  col 3| col 4 |
+| :-------: | :---: | :---: | :---: | :---: | :---: |
+| **row 0** | (0,0) = 0</span> | <span style="color:orange;">(0,1) = 1</span> | <span style="color:green;">(0,2) = 2</span> | <span style="color:yellow;">(0,3) = 3</span> | <span style="color:red;">(0,4) = 4</span> |
+| **row 1** | <span style="color:orange;">(1,0) = 1</span> | <span style="color:green;">(1,1) = 2</span> | <span style="color:yellow;">(1,2) = 3</span> | <span style="color:red;">(1,3) = 4</span> | <span style="color:cyan;">(1,4) = 5</span> |
+| **row 2** | <span style="color:green;">(2,0) = 2</span> | <span style="color:yellow;">(2,1) = 3</span> | <span style="color:red;">(2,2) = 4</span> | <span style="color:cyan;">(2,3) = 5</span> | <span style="color:salmon;">(2,4) = 6</span> |
+| **row 3** | <span style="color:yellow;">(3,0) = 3</span> | <span style="color:red;">(3,1) = 4</span> | <span style="color:cyan;">(3,2) = 5</span> | <span style="color:salmon;">(3,3) = 6</span> | <span style="color:magenta;">(3,4) = 7</span> |
+| **row 4** | <span style="color:red;">(4,0) = 4</span> | <span style="color:cyan;">(4,1) = 5</span> | <span style="color:salmon;">(4,2) = 6</span> | <span style="color:magenta;">(4,3) = 7</span> | (4,4) = 8 |
+
 
 ## Sample run
 ```
