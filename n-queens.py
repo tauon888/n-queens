@@ -8,16 +8,6 @@
 # Copyright:  (c) Mike 2022
 #   Licence:  <your licence>
 # Reference:  https://en.wikipedia.org/wiki/Eight_queens_puzzle
-#   Results:  Gridsize  Solutions     Tested
-#                  4            2       Y
-#                  5           10       Y
-#                  6            4       Y
-#                  7           40       Y
-#                  8           92       Y
-#                  9          352       Y
-#                 10          724       Y
-#                 11         2680       Y
-#                 12        14200       Y
 #-------------------------------------------------------------------------------
 import sys
 import time
@@ -75,7 +65,7 @@ def possible(row, col):
                 return False
     elif row > col:
         start_row = row - col
-        for r, c in zip(range(start_row, grid_size), range(0, grid_size - start_row)):
+        for r, c in zip(range(start_row, grid_size), range(0, grid_size + 1 - start_row)):
             if grid[r][c] == 'Q':
                 return False
     else:
