@@ -45,11 +45,11 @@ Original Diagonal Checking Logic...
 ### Leading/Down Diagonals
 |           | col 0 | col 1 | col 2 |  col 3| col 4 |
 | :-------: | :---: | :---: | :---: | :---: | :---: |
-| **row 0** | <span style="color:red">(0,0)</span> | <span style="color:yellow">(0,1)</span> | <span style="color:green">(0,2)</span> | <span style="color:orange">(0,3)</span> | (0,4) |
-| **row 1** | <span style="color:cyan">(1,0)</span> | <span style="color:red">(1,1)</span> | <span style="color:yellow">(1,2)</span> | <span style="color:green">(1,3)</span> | <span style="color:orange">(1,4)</span> |
-| **row 2** | <span style="color:salmon">(2,0)</span> | <span style="color:cyan">(2,1)</span> | <span style="color:red">(2,2)</span> | <span style="color:yellow">(2,3)</span> | <span style="color:green">(2,4)</span> |
-| **row 3** | <span style="color:magenta">(3,0)</span> | <span style="color:salmon">(3,1)</span> | <span style="color:cyan">(3,2)</span> | <span style="color:red">(3,3)</span> | <span style="color:yellow">(3,4)</span> |
-| **row 4** | (4,0) | <span style="color:magenta">(4,1)</span> | <span style="color:salmon">(4,2)</span> | <span style="color:cyan">(4,3)</span> | <span style="color:red">(4,4)</span> |
+| **row 0** | <span style="color:red;">(0,0)</span> | <span style="color:yellow;">(0,1)</span> | <span style="color:green;">(0,2)</span> | <span style="color:orange;">(0,3)</span> | (0,4) |
+| **row 1** | <span style="color:cyan;">(1,0)</span> | <span style="color:red;">(1,1)</span> | <span style="color:yellow;">(1,2)</span> | <span style="color:green;">(1,3)</span> | <span style="color:orange;">(1,4)</span> |
+| **row 2** | <span style="color:salmon;">(2,0)</span> | <span style="color:cyan;">(2,1)</span> | <span style="color:red;">(2,2)</span> | <span style="color:yellow;">(2,3)</span> | <span style="color:green;">(2,4)</span> |
+| **row 3** | <span style="color:magenta;">(3,0)</span> | <span style="color:salmon;">(3,1)</span> | <span style="color:cyan;">(3,2)</span> | <span style="color:red;">(3,3)</span> | <span style="color:yellow;">(3,4)</span> |
+| **row 4** | (4,0) | <span style="color:magenta;">(4,1)</span> | <span style="color:salmon;">(4,2)</span> | <span style="color:cyan;">(4,3)</span> | <span style="color:red;">(4,4)</span> |
 
 ```
 
@@ -79,11 +79,11 @@ Original Diagonal Checking Logic...
 ### Trailing/Up Diagonals
 |           | col 0 | col 1 | col 2 |  col 3| col 4 |
 | :-------: | :---: | :---: | :---: | :---: | :---: |
-| **row 0** | (0,0)</span> | <span style="color:orange;">(0,1)</span> | <span style="color:green">(0,2)</span> | <span style="color:yellow">(0,3)</span> | <span style="color:red">(0,4)</span> |
-| **row 1** | <span style="color:orange">(1,0)</span> | <span style="color:green">(1,1)</span> | <span style="color:yellow">(1,2)</span> | <span style="color:red">(1,3)</span> | <span style="color:cyan">(1,4)</span> |
-| **row 2** | <span style="color:green">(2,0)</span> | <span style="color:yellow">(2,1)</span> | <span style="color:red">(2,2)</span> | <span style="color:cyan">(2,3)</span> | <span style="color:salmon">(2,4)</span> |
-| **row 3** | <span style="color:yellow">(3,0)</span> | <span style="color:red">(3,1)</span> | <span style="color:cyan">(3,2)</span> | <span style="color:salmon">(3,3)</span> | <span style="color:magenta">(3,4)</span> |
-| **row 4** | <span style="color:red">(4,0)</span> | <span style="color:cyan">(4,1)</span> | <span style="color:salmon">(4,2)</span> | <span style="color:magenta">(4,3)</span> | (4,4) |
+| **row 0** | (0,0)</span> | <span style="color:orange;">(0,1)</span> | <span style="color:green;">(0,2)</span> | <span style="color:yellow;">(0,3)</span> | <span style="color:red;">(0,4)</span> |
+| **row 1** | <span style="color:orange;">(1,0)</span> | <span style="color:green;">(1,1)</span> | <span style="color:yellow;">(1,2)</span> | <span style="color:red;">(1,3)</span> | <span style="color:cyan;">(1,4)</span> |
+| **row 2** | <span style="color:green;">(2,0)</span> | <span style="color:yellow;">(2,1)</span> | <span style="color:red;">(2,2)</span> | <span style="color:cyan;">(2,3)</span> | <span style="color:salmon;">(2,4)</span> |
+| **row 3** | <span style="color:yellow;">(3,0)</span> | <span style="color:red;">(3,1)</span> | <span style="color:cyan;">(3,2)</span> | <span style="color:salmon;">(3,3)</span> | <span style="color:magenta;">(3,4)</span> |
+| **row 4** | <span style="color:red;">(4,0)</span> | <span style="color:cyan;">(4,1)</span> | <span style="color:salmon;">(4,2)</span> | <span style="color:magenta;">(4,3)</span> | (4,4) |
 
 ```
 # Trailing-Up (/) diagonal test.
