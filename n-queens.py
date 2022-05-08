@@ -14,12 +14,10 @@ import time
 
 grid_size = 5
 solutions = 0
-#debug = True
-debug = False
 grid = []
 cols_used = set()
-up_diags_used = set() # (row + col)
-down_diags_used = set() # (row - col)
+up_diags_used = set() # Used to track placed queen's (row + col) diagnonals.
+down_diags_used = set() # Used to track placed queen's (row - col) diagnonals.
 
 def print_grid(s):
     print("Solution:", s)
@@ -36,9 +34,6 @@ def solve(row):
     global grid
     global solutions
 
-    if debug:
-        print(f" Row-{row}")
-        
     if row == grid_size:
         solutions += 1
         print_grid(solutions)
@@ -90,7 +85,7 @@ def main():
 
     # Define an empty grid of the given size.
     grid = [[' '] * grid_size for i in range(0, grid_size)]
-    #print_grid(21)
+
     # Take note of the start time and begin.
     start_time = time.time()      
     solve(0)
@@ -98,9 +93,6 @@ def main():
     # Print the run-time.
     seconds = time.time() - start_time
     print('Duration:', time.strftime("%H:%M:%S", time.gmtime(seconds)), '\n')
-    #print(possible(0,0))
-    #print(possible(1,2))
-    #print(possible(2,4))
 
 if __name__ == '__main__':
     main()
