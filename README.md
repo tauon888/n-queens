@@ -53,8 +53,8 @@ Original Diagonal Checking Logic...
 | **row 3** | <span style="color:magenta;">(3,0)</span> | <span style="color:salmon;">(3,1)</span> | <span style="color:cyan;">(3,2)</span> | <span style="color:red;">(3,3)</span> | <span style="color:yellow;">(3,4)</span> |
 | **row 4** | (4,0) | <span style="color:magenta;">(4,1)</span> | <span style="color:salmon;">(4,2)</span> | <span style="color:cyan;">(4,3)</span> | <span style="color:red;">(4,4)</span> |
 
+A quite complex down diagonal test...
 ```
-
     # Leading-Down (\) diagonal test.
     if row == col:
         # The main down diagonal.
@@ -89,6 +89,7 @@ Original Diagonal Checking Logic...
 | **row 3** | <span style="color:yellow;">(3,0)</span> | <span style="color:red;">(3,1)</span> | <span style="color:cyan;">(3,2)</span> | <span style="color:salmon;">(3,3)</span> | <span style="color:magenta;">(3,4)</span> |
 | **row 4** | <span style="color:red;">(4,0)</span> | <span style="color:cyan;">(4,1)</span> | <span style="color:salmon;">(4,2)</span> | <span style="color:magenta;">(4,3)</span> | (4,4) |
 
+And a similarly complex up diagonal test...
 ```
 # Trailing-Up (/) diagonal test.
 sum = row + col
@@ -132,6 +133,15 @@ for r in range(start_row, stop_row + 1):
 | **row 3** | <span style="color:yellow;">(3,0) = 3</span> | <span style="color:red;">(3,1) = 4</span> | <span style="color:cyan;">(3,2) = 5</span> | <span style="color:salmon;">(3,3) = 6</span> | <span style="color:magenta;">(3,4) = 7</span> |
 | **row 4** | <span style="color:red;">(4,0) = 4</span> | <span style="color:cyan;">(4,1) = 5</span> | <span style="color:salmon;">(4,2) = 6</span> | <span style="color:magenta;">(4,3) = 7</span> | (4,4) = 8 |
 
+So much simpler logic, very simple test for checking for a clear column and both diagonals...
+```
+cols_used = set()
+up_diags_used = set() # Used to track placed queen's (row + col) diagnonals.
+down_diags_used = set() # Used to track placed queen's (row - col) diagnonals.
+for col in range(0, grid_size):
+    if col in cols_used or (row + col) in up_diags_used or (row - col) in down_diags_used:
+        continue
+```
 
 ## Sample run
 ```
