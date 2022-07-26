@@ -11,25 +11,26 @@ This is based on:
 using sets - https://www.youtube.com/watch?v=Ph95IHmRp5M
 
 ## Statistics
-| Board Size | Unique Solutions | Total Solutions | Run Time<sup>1</sup> | Run Time<sup>2</sup> |
-| ---------: | ---------------: | --------------: | :-------------------: | :-----------------: |
-|  1 | 1 |       1 | 00:00:00 | 00:00:00 |
-|  2 | 0 |       0 | 00:00:00 | 00:00:00 |
-|  3 | 0 |       0 | 00:00:00 | 00:00:00 |
-|  4 | 2 |       2 | 00:00:00 | 00:00:00 |
-|  5 |   |      10 | 00:00:00 | 00:00:00 |
-|  6 |   |       4 | 00:00:00 | 00:00:00 |
-|  7 |   |      40 | 00:00:00 | 00:00:00 |
-|  8 |   |      92 | 00:00:00 | 00:00:00 |
-|  9 |   |     352 | 00:00:02 | 00:00:01 |
-| 10 |   |     724 | 00:00:04 | 00:00:03 |
-| 11 |   |   2,680 | 00:00:20 | 00:00:12 |
-| 12 |   |  14,200 | 00:01:59 | 00:01:13 |
-| 13 |   |  73,712 | 00:10:18 | 00:05:42 |
-| 14 |   | 365,596 | 01:01:03 | 00:34:48 |
+| Board Size | Unique Solutions<sup>1</sup> | Total Solutions | Run Time<sup>2</sup> | Run Time<sup>3</sup> |
+| ---------: | ---------------------------: | --------------: | :------------------: | :------------------: |
+|          1 |                            1 |               1 |             00:00:00 |             00:00:00 |
+|          2 |                            0 |               0 |             00:00:00 |             00:00:00 |
+|          3 |                            0 |               0 |             00:00:00 |             00:00:00 |
+|          4 |                            1 |               2 |             00:00:00 |             00:00:00 |
+|          5 |                            2 |              10 |             00:00:00 |             00:00:00 |
+|          6 |                            1 |               4 |             00:00:00 |             00:00:00 |
+|          7 |                            6 |              40 |             00:00:00 |             00:00:00 |
+|          8 |                           12 |              92 |             00:00:00 |             00:00:00 |
+|          9 |                           46 |             352 |             00:00:02 |             00:00:01 |
+|         10 |                           92 |             724 |             00:00:04 |             00:00:03 |
+|         11 |                          341 |           2,680 |             00:00:20 |             00:00:12 |
+|         12 |                        1,787 |          14,200 |             00:01:59 |             00:01:13 |
+|         13 |                        9,233 |          73,712 |             00:10:18 |             00:05:42 |
+|         14 |                       45,752 |         365,596 |             01:01:03 |             00:34:48 |
 
-- Note <sup>1</sup> - Timings based on my original diagonal checking
-- Note <sup>2</sup> - Timings based on Neetcode's diagonal checking
+- Note <sup>1</sup> - This sequence is listed as [A002562](https://oeis.org/A002562) in the online encyclopedia of integer sequences (OEIS)
+- Note <sup>2</sup> - Timings based on my original diagonal checking
+- Note <sup>3</sup> - Timings based on Neetcode's diagonal checking
 
 Original Diagonal Checking Logic...
 5 x 5 board example
