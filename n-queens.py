@@ -9,37 +9,42 @@
 # Copyright:  (c) Mike 2022
 # Reference:  https://en.wikipedia.org/wiki/Eight_queens_puzzle
 #-------------------------------------------------------------------------------
-import sys
 import time
+import argparse
 
-grid_size = 5
+n = 5
 solutions = 0
 grid = []
 cols_used = set()
 up_diags_used = set() # Used to track placed queen's (row + col) diagnonals.
 down_diags_used = set() # Used to track placed queen's (row - col) diagnonals.
 
-def print_grid(s):
+def print_grid(s, n):
     print("Solution:", s)
     for row in grid:
-        print("+---" * grid_size + "+")
+        print("+---" * n + "+")
         for cell in row:
             print('|', cell, end=" ")
         print('|')
-    print("+---" * grid_size + "+")
+    print("+---" * n + "+")
     return
 
 
-def solve(row):
+def check_unique(position, n):
+    return True
+
+def solve(row, n):
     global grid
     global solutions
 
-    if row == grid_size:
-        solutions += 1
-        print_grid(solutions)
+    if row == n:
+        position = 0
+        if check_unique(position, n):
+            solutions += 1
+            print_grid(solutions, n)
         return
 
-    for col in range(0, grid_size):
+    for col in range(0, n):
         if col in cols_used or (row + col) in up_diags_used or (row - col) in down_diags_used:
             continue
 
@@ -49,7 +54,7 @@ def solve(row):
         grid[row][col] = 'Q'
 
         # Solve the next row by calling ourself recursively.
-        solve(row + 1)
+        solve(row + 1, n)
 
         # Now backtrack to find more solutions.
         cols_used.remove(col)
@@ -62,33 +67,31 @@ def solve(row):
 
 def main():
     global grid
-    global grid_size
+    global n
 
     # Check for any command line args.
-    num_args = len(sys.argv)
-    if num_args < 2:
-        while True:
-            try:
-                grid_size = int(input("Board size, n? "))
-                break
-            except ValueError:
-                print("Please input a number")
-                continue
-    elif num_args == 2:
-        grid_size = int(sys.argv[1])
-    else:
-        print("Too many parameters")
-        sys.exit(2)
+    parser = argparse.ArgumentParser(description='This program computes the solutions to the n-queens problem.  That is, how to place n-queens on a chessboard, so they cannot take each other.')
+    parser.add_argument('-n', '--size', help='size of board', type=int, default=8)
+    parser.add_argument('-a', '--all', help='compute/print non-unique solutions', action='store_true')
+    args = parser.parse_args()
+
+    #print(vars(args))
+
+    n = args.size
+    all_sols = args.all
 
     # Show the board size that will be used.
-    print(f'Using an {grid_size} x {grid_size} board')
+    if all_sols:
+        print(f'Finding all solutions using a {n} x {n} board...\n')
+    else:
+        print(f'Finding unique solutions using a {n} x {n} board...\n')
 
     # Define an empty grid of the given size.
-    grid = [[' '] * grid_size for i in range(0, grid_size)]
+    grid = [[' '] * n for i in range(0, n)]
 
     # Take note of the start time and begin.
     start_time = time.time()
-    solve(0)
+    solve(0, n)
 
     # Print the run-time.
     seconds = time.time() - start_time
