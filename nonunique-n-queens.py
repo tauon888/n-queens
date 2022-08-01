@@ -1,7 +1,6 @@
 #-------------------------------------------------------------------------------
-#      Name:  n-queens.py
+#      Name:  nonunique-n-queens.py
 #   Purpose:  Use backtracking to find all 8-queens solutions.
-#             Can show unique (default) and non-unique solutions (-a switch).
 #
 #    Author:  Mike Smith (Based on Thorsten Altenkirch's Suduko implementation)
 #
