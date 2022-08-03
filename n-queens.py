@@ -12,14 +12,14 @@
 import time
 import argparse
 
-solutions = 0
-board = []
+sol_count = 0
+solutions = []
 cols_used = set()
 up_diags_used = set() # Used to track placed queen's (row + col) diagnonals.
 down_diags_used = set() # Used to track placed queen's (row - col) diagnonals.
 
-def print_board(s, n):
-    print("Solution:", s)
+def print_board(board, sol_count, n):
+    print("Solution:", sol_count)
     for queen in board:
         print("+---" * n + "+")
         for col in range(0, n):
@@ -32,22 +32,137 @@ def print_board(s, n):
     print()
 
 
-def check_unique(position, n):
-    return True
+def summarize(board):
+    # This function returns a flattened string showing the board position.
+    return ' '.join(str(x) for x in board)
 
 
-def solve(row, n, unique):
-    global board
-    global solutions
+def rotate_90(board, n):
+    # This function returns a 90 degree anti-clockwise rotation of the given board position.
+    rotated_board = [0 for i in range(0, n)]
+    for row in range(0, n):
+        rotated_board[n - 1 - board[row]] = row
+    #print('90', board, rotated_board)
+
+    return summarize(rotated_board)
+
+
+def rotate_180(board, n):
+    # This function returns a 180 degree anti-clockwise rotation of the given board position.
+    rotated_board = [0 for i in range(0, n)]
+    for row in range(0, n):
+        rotated_board[n - 1 - row] = n - 1 - board[row]
+    #print('180', board, rotated_board)
+
+    return summarize(rotated_board)
+
+
+def rotate_270(board, n):
+    # This function returns a 270 degree anti-clockwise rotation of the given board position.
+    rotated_board = [0 for i in range(0, n)]
+    for row in range(0, n):
+        rotated_board[board[row]] = n - 1 - row
+    #print('270', board, rotated_board)
+
+    return summarize(rotated_board)
+
+
+def reflect_leading(board, n):
+    # This function returns a reflection in the leading diagonal of the given board position.
+    reflected_board = [0 for i in range(0, n)]
+    for row in range(0, n):
+        reflected_board[board[row]] = row
+    #print(board, reflected_board)
+
+    return summarize(reflected_board)
+
+
+def reflect_trailing(board, n):
+    # This function returns a reflection in the trailing diagonal of the given board position.
+    reflected_board = [0 for i in range(0, n)]
+    for row in range(0, n):
+        reflected_board[n - 1 - board[row]] = n - 1 - row
+    #print(board, reflected_board)
+
+    return summarize(reflected_board)
+
+
+def reflect_horizontally(board, n):
+    # This function returns a horizontal reflection of the given board position.
+    reflected_board = [0 for i in range(0, n)]
+    for row in range(0, n):
+        reflected_board[n - 1 - row] = board[row]
+    #print(board, reflected_board)
+
+    return summarize(reflected_board)
+
+
+def reflect_vertical(board, n):
+    # This function returns a vartical reflection of the given board position.
+    reflected_board = [0 for i in range(0, n)]
+    for row in range(0, n):
+        reflected_board[row] = n - 1 - board[row]
+    #print(board, reflected_board)
+
+    return summarize(reflected_board)
+
+
+def check_unique(board, n, sol_count):
+    #
+    # This function computes 7 symmetries of the board position.  These are:
+    #
+    #  1. 90  degree rotation.
+    #  2. 180 degree rotation.
+    #  3. 270 degree rotation.
+    #  4. 180 degree reflection about the top-left/bottom-right diagonal.
+    #  5. 180 degree reflection about the bottom-left/top-right diagonal.
+    #  6. 180 degree reflection about the horizontal mid-line.
+    #  7. 180 degree reflection about the vertical mid-line.
+    #
+    unique_solution = True
+
+    if sol_count > 0:
+        # Compare all 7 symmetries with all previous solutions.
+        rotated_90_board = rotate_90(board, n)
+        rotated_180_board = rotate_180(board, n)
+        rotated_270_board = rotate_270(board, n)
+
+        reflected_leading_board = reflect_leading(board, n)
+        reflected_trailing_board = reflect_trailing(board, n)
+        reflected_horizontal_board = reflect_horizontally(board, n)
+        reflected_vertical_board = reflect_vertical(board, n)
+
+        for solution in solutions:
+            if rotated_90_board == solution or \
+               rotated_180_board == solution or \
+               rotated_270_board == solution or \
+               reflected_leading_board == solution or \
+               reflected_trailing_board == solution or \
+               reflected_horizontal_board == solution or \
+               reflected_vertical_board == solution:
+                   unique_solution = False
+
+            if not unique_solution:
+                break
+
+    return unique_solution
+
+
+def solve(board, row, n, unique):
+    global sol_count
 
     if row == n:
-        position = 0
-        if unique and check_unique(position, n):
-            solutions += 1
-            print_board(solutions, n)
+        if unique:
+            if check_unique(board, n, sol_count):
+                sol_count += 1
+                solutions.append(summarize(board))
+                print_board(board, sol_count, n)
+                #print('SOLNS', solutions)
+                #print()
+                #print()
         else:
-            solutions += 1
-            print_board(solutions, n)
+            sol_count += 1
+            print_board(board, sol_count, n)
         return
 
     for col in range(0, n):
@@ -60,7 +175,7 @@ def solve(row, n, unique):
         board[row] = col
 
         # Solve the next row by calling ourself recursively.
-        solve(row + 1, n, unique)
+        solve(board, row + 1, n, unique)
 
         # Now backtrack to find more solutions.
         cols_used.remove(col)
@@ -70,15 +185,11 @@ def solve(row, n, unique):
 
 
 def main():
-    global board
-
     # Check for any command line args.
     parser = argparse.ArgumentParser(description='This program computes the solutions to the n-queens problem.  That is, how to place n-queens on a chessboard, so they cannot take each other.')
     parser.add_argument('-n', '--size', help='size of board', type=int, default=8)
     parser.add_argument('-a', '--all', help='compute/print non-unique solutions', action='store_true')
     args = parser.parse_args()
-
-    #print(vars(args))
 
     n = args.size
     unique = not args.all
@@ -91,13 +202,12 @@ def main():
     else:
         print(f'Finding all (non-unique) solutions using a {n}x{n} board...\n')
 
-    # Define an empty grid of the given size.
-    #grid = [[' '] * n for i in range(0, n)]
+    # Define an empty board of the given size.
     board = [0 for i in range(0, n)]
 
     # Take note of the start time and begin.
     start_time = time.time()
-    solve(0, n, unique)
+    solve(board, 0, n, unique)
 
     # Print the run-time.
     seconds = time.time() - start_time
