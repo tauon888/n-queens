@@ -204,7 +204,7 @@ def main():
     parser.add_argument('-a', '--all', help='compute/print non-unique solutions', action='store_true')
     parser.add_argument('-c', '--count', help='output only a count of the solutions', action='store_true')
     parser.add_argument('-d', '--debug', help='print some debugging output', action='store_true')
-    parser.add_argument('-p', '--debug_args', help='only output debug at these points', default='[]', nargs='*')
+    parser.add_argument('-p', '--debug_args', help='print debug at specific points: 90 180 270 LDIAG TDIAG HORI VERT', default='[]', nargs='*')
     args = parser.parse_args()
 
     n = args.size
