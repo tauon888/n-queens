@@ -12,24 +12,27 @@
 import time
 import argparse
 
+debug = False
+debug_args = []
 sol_count = 0
 solutions = []
 cols_used = set()
 up_diags_used = set() # Used to track placed queen's (row + col) diagnonals.
 down_diags_used = set() # Used to track placed queen's (row - col) diagnonals.
 
-def print_board(board, sol_count, n):
+def print_board(board, sol_count, n, count_only):
     print("Solution:", sol_count)
-    for queen in board:
+    if not count_only:
+        for queen in board:
+            print("+---" * n + "+")
+            for col in range(0, n):
+                if col == queen:
+                    print('|', 'Q', end=" ")
+                else:
+                    print('|', ' ', end=" ")
+            print('|')
         print("+---" * n + "+")
-        for col in range(0, n):
-            if col == queen:
-                print('|', 'Q', end=" ")
-            else:
-                print('|', ' ', end=" ")
-        print('|')
-    print("+---" * n + "+")
-    print()
+        print()
 
 
 def summarize(board):
@@ -42,7 +45,8 @@ def rotate_90(board, n):
     rotated_board = [0 for i in range(0, n)]
     for row in range(0, n):
         rotated_board[n - 1 - board[row]] = row
-    #print('90', board, rotated_board)
+    if debug or '90' in debug_args:
+        print('90', board, rotated_board)
 
     return summarize(rotated_board)
 
@@ -52,7 +56,8 @@ def rotate_180(board, n):
     rotated_board = [0 for i in range(0, n)]
     for row in range(0, n):
         rotated_board[n - 1 - row] = n - 1 - board[row]
-    #print('180', board, rotated_board)
+    if debug or '180' in debug_args:
+        print('180', board, rotated_board)
 
     return summarize(rotated_board)
 
@@ -62,7 +67,8 @@ def rotate_270(board, n):
     rotated_board = [0 for i in range(0, n)]
     for row in range(0, n):
         rotated_board[board[row]] = n - 1 - row
-    #print('270', board, rotated_board)
+    if debug or '270' in debug_args:
+        print('270', board, rotated_board)
 
     return summarize(rotated_board)
 
@@ -72,7 +78,8 @@ def reflect_leading(board, n):
     reflected_board = [0 for i in range(0, n)]
     for row in range(0, n):
         reflected_board[board[row]] = row
-    #print(board, reflected_board)
+    if debug or 'LDIAG' in debug_args:
+        print('LDIAG', board, reflected_board)
 
     return summarize(reflected_board)
 
@@ -82,7 +89,8 @@ def reflect_trailing(board, n):
     reflected_board = [0 for i in range(0, n)]
     for row in range(0, n):
         reflected_board[n - 1 - board[row]] = n - 1 - row
-    #print(board, reflected_board)
+    if debug or 'TDIAG' in debug_args:
+        print('TDIAG', board, reflected_board)
 
     return summarize(reflected_board)
 
@@ -92,7 +100,8 @@ def reflect_horizontally(board, n):
     reflected_board = [0 for i in range(0, n)]
     for row in range(0, n):
         reflected_board[n - 1 - row] = board[row]
-    #print(board, reflected_board)
+    if debug or 'HORI' in debug_args:
+        print('HORI', board, reflected_board)
 
     return summarize(reflected_board)
 
@@ -102,7 +111,8 @@ def reflect_vertical(board, n):
     reflected_board = [0 for i in range(0, n)]
     for row in range(0, n):
         reflected_board[row] = n - 1 - board[row]
-    #print(board, reflected_board)
+    if debug or 'VERT' in debug_args:
+        print('VERT', board, reflected_board)
 
     return summarize(reflected_board)
 
@@ -148,7 +158,7 @@ def check_unique(board, n, sol_count):
     return unique_solution
 
 
-def solve(board, row, n, unique):
+def solve(board, row, n, unique, count_only):
     global sol_count
 
     if row == n:
@@ -156,13 +166,13 @@ def solve(board, row, n, unique):
             if check_unique(board, n, sol_count):
                 sol_count += 1
                 solutions.append(summarize(board))
-                print_board(board, sol_count, n)
-                #print('SOLNS', solutions)
-                #print()
-                #print()
+                print_board(board, sol_count, n, count_only)
+                if debug:
+                    print('SOLS', solutions)
+                    print()
         else:
             sol_count += 1
-            print_board(board, sol_count, n)
+            print_board(board, sol_count, n, count_only)
         return
 
     for col in range(0, n):
@@ -175,7 +185,7 @@ def solve(board, row, n, unique):
         board[row] = col
 
         # Solve the next row by calling ourself recursively.
-        solve(board, row + 1, n, unique)
+        solve(board, row + 1, n, unique, count_only)
 
         # Now backtrack to find more solutions.
         cols_used.remove(col)
@@ -185,14 +195,24 @@ def solve(board, row, n, unique):
 
 
 def main():
+    global debug
+    global debug_args
+
     # Check for any command line args.
     parser = argparse.ArgumentParser(description='This program computes the solutions to the n-queens problem.  That is, how to place n-queens on a chessboard, so they cannot take each other.')
     parser.add_argument('-n', '--size', help='size of board', type=int, default=8)
     parser.add_argument('-a', '--all', help='compute/print non-unique solutions', action='store_true')
+    parser.add_argument('-c', '--count', help='output only a count of the solutions', action='store_true')
+    parser.add_argument('-d', '--debug', help='print some debugging output', action='store_true')
+    parser.add_argument('-p', '--debug_args', help='only output debug at these points', default='[]', nargs='*')
     args = parser.parse_args()
 
     n = args.size
     unique = not args.all
+    count_only = args.count
+    debug = args.debug
+    debug_args = args.debug_args
+
     version = 'V1.0'
     print('N-Queens Solver {}'.format(version))
 
@@ -207,7 +227,7 @@ def main():
 
     # Take note of the start time and begin.
     start_time = time.time()
-    solve(board, 0, n, unique)
+    solve(board, 0, n, unique, count_only)
 
     # Print the run-time.
     seconds = time.time() - start_time
